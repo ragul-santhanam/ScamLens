@@ -1,85 +1,152 @@
-# ScamLens
+<p align="center">
+  <img src="app/www/assets/logo.png" width="110" alt="ScamLens Logo" />
+</p>
 
-> *"See Through Scams. Stay Safe."*
+<h1 align="center">ScamLens</h1>
 
-ScamLens is a mobile security prototype designed to protect users against SMS phishing (smishing), fraudulent job schemes, UPI collect traps, lottery hoaxes, fake delivery alerts, and malicious domains.
-
-Built with **Capacitor**, **Express.js**, and **MongoDB Atlas**, it combines an on-device rule evaluation engine with a cloud storage backend while enforcing strict privacy principles (no personal data or raw texts stored).
-
----
-
-## 📱 Mobile Architecture & Key Features
-
-- **No Sign-In Required**: Anonymous UUIDv4 generated on first launch and preserved in Capacitor Preferences (`@capacitor/preferences`).
-- **Resilient Dual-Engine (Online & Offline)**:
-  - **Online**: Sends text/URL to Express backend -> Evaluates rules -> Persists masked record in MongoDB -> Returns score & recommendations.
-  - **Offline Fallback**: If the server is unreachable (5s timeout or airplane mode), runs the identical on-device engine from `app/www/js/engine/`, shows an **"Offline mode"** chip, and flags results as *"Not saved to history"*.
-- **Device-Isolated History**: All history queries filter strictly by `deviceId` in MongoDB Atlas so no device can ever access another user's scan records.
-- **Privacy First**:
-  - Raw messages or full URLs are **NEVER logged or stored**.
-  - Digits are masked to `*`, emails converted to `[email]`, phone numbers removed, and URLs truncated to domains only (`masking.js`).
-  - Risk verdict rules: Never use the word "Safe". Low risk results state *"No major risk indicators found"* with mandatory disclaimers.
+<p align="center">
+  <strong><em>"See Through Scams. Stay Safe."</em></strong><br/>
+  Full-Stack Digital Scam Detection, Prevention & Emergency Assistance Mobile Application
+</p>
 
 ---
 
-## ⚡ Connection Test (Verify Server Reachability)
+**ScamLens** is a full-stack mobile security application designed to protect users against SMS phishing (smishing), lookalike brand impersonation websites, fraudulent QR codes, manipulated UPI payment screenshots, job/lottery scams, and active digital fraud emergencies.
 
-> **CONNECTION TEST**: Before testing the mobile app from an emulator or physical phone, open `http://<YOUR_SERVER_IP>:3000/api/health` from the phone's browser (e.g. Chrome on Android) to confirm the phone can reach your laptop server.
->
-> Expected response:
-> ```json
-> { "status": "ok", "db": "connected" }
-> ```
-> *(or `"db": "disconnected"` if MongoDB Atlas is not yet configured, which triggers the automatic resilient in-memory fallback).*
+Built with **HTML/CSS/JavaScript**, **Capacitor 6 (Android)**, **Node.js + Express.js**, and **MongoDB Atlas**, ScamLens combines an on-device rule evaluation engine with a cloud backend, OCR & QR inspection services, and strict privacy controls.
+
+---
+
+## 🌟 Core Full-Stack Features
+
+### 1. 💬 Suspicious Message Analyzer (SMS / WhatsApp / Email)
+- Evaluates messages against 28+ weighted heuristic rules covering urgency threats, fake KYC expiry lures, unrealistic part-time job offers, UPI collect traps, fake courier alerts, and OTP harvesting.
+- **Privacy Masking (`masking.js`)**: Automatically masks 4+ digit numbers (`*`), emails (`[email]`), and phone numbers (`[phone]`) before storing any preview.
+
+### 2. 🌐 Website URL & Brand Impersonation Checker
+- **39-Brand Official Domain Registry**: Compares entered domains against verified Indian & global banking, UPI, e-commerce, and government domains (SBI, HDFC, ICICI, Axis, Paytm, PhonePe, GPay, NPCI, Amazon, India Post, Income Tax, Parivahan, etc.).
+- **Lookalike & Typosquatting Detection**: Computes Levenshtein edit distance to catch subtle misspellings (`onlinesbii.co.in` vs `www.onlinesbi.sbi`).
+- **Character Substitution & Homoglyphs**: Detects digit-for-letter and multi-letter spoofing (`0→o`, `1→l/i`, `rn→m`, `vv→w`, e.g., `paypa1-verify.com`).
+- **Punycode / IDN Homograph Detection**: Flags `xn--` internationalized domains.
+- **SSRF-Protected Live Inspection**: Inspects HTTPS/TLS certificates, multi-hop redirect chains, open-redirect query parameters, and RDAP domain registration age while blocking private/loopback/metadata IP ranges (`ssrfGuard.js`).
+
+### 3. 📷 QR Code Scam Detector
+- **Live Camera & Gallery Scanning**: Uses `getUserMedia` + `jsQR` in the mobile viewport or decodes uploaded PNG/JPG QR images on the backend.
+- **Smart Payload Classification**:
+  - **Website URLs**: Automatically routed through the full Website Identity & Brand Impersonation engine.
+  - **UPI Payment URIs (`upi://pay`)**: Extracts Payee VPA (`pa`), Payee Name (`pn`), Amount (`am`), Note (`tn`), and Mode (`mode`), flagging *"Scan QR & enter PIN to receive refund/cashback"* scams, AutoPay mandates, and unverified high-value merchant requests.
+  - **Plain Text**: Analyzed via the ScamLens Message Analyzer.
+- **Safety Guarantee**: Never automatically opens extracted URLs or initiates UPI payment intents.
+
+### 4. 🧾 Fake Payment Screenshot Detector (OCR)
+- **Server-Side OCR (`tesseract.js`)**: Validates uploaded PNG/JPG/JPEG images (magic-byte verification, max 5 MB, processed in memory only) and extracts:
+  - Transaction ID / 12-digit UTR / UPI Reference Number
+  - Payment Amount (`₹ / INR`)
+  - Date & Time
+  - Sender & Receiver names / UPI IDs
+  - Payment Status (`Paid`, `Completed`, `Pending`, `Failed`) & Payment App (`GPay`, `PhonePe`, `Paytm`, `BHIM`)
+- **Manipulation & Fraud Checks**: Flags missing or fabricated UTR patterns (`111111111111`, `123456789012`), non-settled statuses (`Pending`/`Processing`), contradictory status keywords, unusual image aspect ratios, and **duplicate UTR reuse** across prior scans in MongoDB.
+
+### 5. 🚨 Scam Emergency Assistant
+- Interactive guided triage asking *"What happened to you?"* across **7 fraud categories**:
+  1. Transferred money to a suspected scammer
+  2. Shared OTP, PIN, CVV, or banking credentials
+  3. Clicked a suspicious website link
+  4. Installed an unknown APK / application
+  5. Someone is remotely controlling or accessing the phone (`AnyDesk`, `TeamViewer`, `RustDesk`)
+  6. Received a suspicious call or message (including fake "Digital Arrest" threats)
+  7. Other digital fraud incidents
+- Provides situation-specific action checklists and verified **Indian Cybercrime Support**:
+  - **National Cybercrime Helpline**: **1930** (one-tap dialer)
+  - **National Cyber Crime Reporting Portal**: [https://cybercrime.gov.in/](https://cybercrime.gov.in/)
+  - **Sanchar Saathi (DoT)**: [https://sancharsaathi.gov.in/](https://sancharsaathi.gov.in/)
+- Persists emergency sessions in MongoDB without collecting sensitive banking secrets.
+
+### 6. 🔐 User Authentication & Isolated Profile History
+- Complete Sign Up, Login, Logout, User Profile Dashboard, and 2-step Verification Code Password Reset flow.
+- Passwords hashed with `bcryptjs` (12 salt rounds); protected routes authenticated via `jsonwebtoken` (JWT) with server-side logout token revocation.
+- Strict per-user (`userId`) and per-device (`deviceId`) data isolation across all scan histories.
+
+---
+
+## 🔌 Backend API Endpoints
+
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `GET` | `/api/health` | Health check, active feature list, and MongoDB connection status |
+| `POST` | `/api/auth/signup` | Register user account with `bcryptjs` password hashing & JWT |
+| `POST` | `/api/auth/login` | Authenticate user and issue JWT (`7d` or `30d` with Remember Me) |
+| `POST` | `/api/auth/logout` | Revoke active JWT access token |
+| `POST` | `/api/auth/forgot-password` | Two-step password reset code generation & verification |
+| `GET` | `/api/auth/me` | Protected user profile, scan statistics, and recent history |
+| `POST` | `/api/analyze/message` | Analyze suspicious SMS/WhatsApp/email message |
+| `POST` | `/api/analyze/url` | Analyze URL with Website Identity & Brand Impersonation engine |
+| `POST` | `/api/qr/analyze` | Decode and analyze QR payload or uploaded QR image |
+| `GET` | `/api/qr/history` | Retrieve saved QR scan history for user/device |
+| `POST` | `/api/payment/analyze` | OCR and heuristic analysis of uploaded UPI/bank screenshot |
+| `GET` | `/api/payment/history` | Retrieve saved payment screenshot scan history |
+| `GET` | `/api/emergency/guidance` | Retrieve incident categories & tailored emergency response steps |
+| `POST` | `/api/emergency/session` | Save completed emergency assistance session |
+| `GET` | `/api/emergency/history` | Retrieve user's saved emergency assistance sessions |
+| `GET/DELETE` | `/api/history` | Unified scan history retrieval, single-item delete, and clear all |
 
 ---
 
 ## 📁 Folder Structure
 
-```
+```text
 scamlens/
-├── shared/                       # Shared pure JS analysis engine
-│   ├── config.js                 # Risk thresholds, recommendations, and limits
-│   ├── scoring.js                # Weight summation & risk tier calculation
-│   ├── masking.js                # Privacy masking engine (digits, emails, phones)
-│   ├── messageAnalyzer.js        # Heuristic evaluator for text messages
-│   ├── urlAnalyzer.js            # URL validation, domain & spoof detection
+├── shared/                              # Shared pure-JS analysis engine (Node & Browser)
+│   ├── config.js                        # Risk thresholds, severities, and limits
+│   ├── scoring.js                       # Weight summation & risk tier calculation
+│   ├── masking.js                       # Privacy masking engine (digits, emails, phones)
+│   ├── messageAnalyzer.js               # Heuristic evaluator for text messages
+│   ├── urlAnalyzer.js                   # URL validation, 39-brand registry & spoof detection
 │   └── rules/
-│       └── message.json          # 28+ categorized fraud rules (weights 1-30)
-├── server/                       # Node.js + Express backend
-│   ├── app.js                    # Express application entrypoint
-│   ├── .env.example              # Environment variables template
-│   ├── models/
-│   │   └── Scan.js               # Mongoose schema + TTL index + fallback store
-│   ├── routes/
-│   │   ├── health.js             # GET /api/health
-│   │   ├── analyze.js            # POST /api/analyze/message, POST /api/analyze/url
-│   │   └── history.js            # GET/DELETE /api/history
-│   └── middleware/
-│       ├── validate.js           # UUID, message & URL validators
-│       ├── rateLimit.js          # Express rate limiter (30 req/min)
-│       └── errorHandler.js       # Centralized error handler without stack traces
-├── app/                          # Mobile frontend web assets & Capacitor config
-│   ├── capacitor.config.json     # Cleartext dev settings & app identifiers
+│       └── message.json                 # Categorized fraud rules (weights 1-30)
+├── server/                              # Node.js + Express backend
+│   ├── app.js                           # Express entrypoint + USB/Wi-Fi mobile bridge
+│   ├── .env.example                     # Environment variables template
+│   ├── controllers/                     # Route controllers (auth, qr, payment, emergency)
+│   ├── services/                        # Business logic (urlIdentity, qrAnalyzer, paymentOcr, emergency)
+│   ├── utils/
+│   │   └── ssrfGuard.js                 # SSRF protection for live URL/TLS/RDAP checks
+│   ├── models/                          # Mongoose schemas + resilient in-memory fallback stores
+│   │   ├── User.js
+│   │   ├── Scan.js
+│   │   ├── MessageScan.js
+│   │   ├── URLScan.js
+│   │   ├── QRScan.js
+│   │   ├── PaymentScreenshotScan.js
+│   │   └── EmergencySession.js
+│   ├── routes/                          # Express routers (health, auth, analyze, qr, payment, emergency, history)
+│   └── middleware/                      # JWT auth, express-validator, rateLimiter, errorHandler
+├── app/                                 # Mobile frontend web assets
 │   └── www/
-│       ├── index.html            # Mobile-first interface (360x800 layout)
+│       ├── index.html                   # Mobile-first SPA interface
+│       ├── assets/                      # ScamLens branding logos & icons
 │       ├── css/
-│       │   └── style.css         # Custom design system (#F6F8F7, #0B5D66, #B3261E)
+│       │   └── style.css                # ScamLens Design System (#0D6269, #8BE5D8, #FFFFFF)
 │       └── js/
-│           ├── config.js         # API Base URL & timeout settings
-│           ├── device.js         # Capacitor Preferences deviceId manager
-│           ├── api.js            # Client API client with offline fallback
-│           ├── ui.js             # DOM manipulation, modals, and toasts
-│           ├── app.js            # Main application controller
-│           └── engine/           # Copied from shared/ by scripts/sync-engine.js
-├── android/                      # Native Android project generated by Capacitor
+│           ├── config.js                # API URLs, timeouts & candidate auto-discovery
+│           ├── device.js                # Capacitor Preferences deviceId manager
+│           ├── api.js                   # Client API service with parallel server discovery & offline fallback
+│           ├── ui.js                    # DOM rendering for all 5 feature views & reports
+│           ├── app.js                   # Main application controller
+│           ├── vendor/jsQR.js           # Bundled QR decoding library
+│           └── engine/                  # Synced from shared/ by scripts/sync-engine.js
+├── android/                             # Native Android project (Capacitor 6)
 ├── scripts/
-│   └── sync-engine.js            # Asset synchronizer (shared/ -> app/www/js/engine/)
+│   ├── sync-engine.js                   # Syncs shared/ -> app/www/ -> www/ & android/
+│   └── generate-brand-assets.js         # Generates header logos, Android mipmaps & splash screens
 ├── tests/
-│   ├── samples.json              # 20 benchmark messages (10 scam, 10 genuine) & 8 URLs
-│   ├── runTests.js               # Unit benchmark test runner
-│   ├── e2e.js                    # Live Express server integration test runner
-│   └── app-api.test.js           # Client API library test runner
+│   ├── samples.json                     # 20 benchmark messages & 8 URLs
+│   ├── runTests.js                      # Shared engine unit benchmark (28/28 checks)
+│   ├── e2e.js                           # Core server E2E test suite (6/6 checks)
+│   ├── app-api.test.js                  # Client API integration suite (5/5 checks)
+│   └── full-stack-features.test.js      # Full-stack 5-feature verification suite (30/30 checks)
+├── capacitor.config.json
+├── package.json
 └── README.md
 ```
 
@@ -92,94 +159,66 @@ scamlens/
 npm install
 ```
 
-### 2. Configure Environment (.env)
+### 2. Configure Environment (`.env`)
 Create a `.env` file in the project root:
 ```bash
 cp server/.env.example .env
 ```
-Edit `.env` with your MongoDB Atlas connection string:
+Edit `.env` with your MongoDB Atlas connection string and JWT secret:
 ```env
-PORT=3000
+PORT=80
 MONGODB_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/scamlens?retryWrites=true&w=majority
+JWT_SECRET=your_super_secret_jwt_key
 NODE_ENV=development
 ```
-*(Note: If `MONGODB_URI` is omitted or cluster is unreachable, ScamLens automatically runs on its resilient in-memory datastore with full deviceId isolation and zero crashes).*
+*(Note: If `MONGODB_URI` is omitted or unreachable, ScamLens automatically operates on its resilient in-memory fallback store without crashing).*
 
-### 3. Synchronize Shared Engine Files
-Whenever changes are made to `shared/`, synchronize them to the mobile web assets:
+### 3. Synchronize Engine & Android Assets
 ```bash
-npm run sync-engine
+npm run cap:sync
 ```
 
-### 4. Start the Express Backend
+### 4. Start the Backend Server
 ```bash
-npm run start
+npm start
 ```
-The server will start on `http://localhost:3000`.
+- **On your laptop**: Open `http://localhost`
+- **On your phone (Wi-Fi)**: Open the Wi-Fi IP printed in the terminal (e.g., `http://192.168.x.x`)
+- **On your phone (USB cable)**: Automatically tunnels via `adb reverse tcp:3000 tcp:3000` (`http://127.0.0.1:3000`)
 
 ---
 
-## 🧪 Testing Suite
+## 🧪 Running the Test Suites
 
-### Run Rule Accuracy Benchmarks (Phase 1)
-Evaluates 20 real-world messages and 8 URLs against the heuristic engine:
-```bash
-npm run test
-```
-*Expected: 28/28 Passed (100% Accuracy). Genuine bank debits and delivery OTPs score Low Risk; scams score Suspicious or High Risk.*
-
-### Run End-to-End Server Verification (Phase 2)
-Tests live health endpoints, MongoDB scan creation, masking rules, deviceId isolation, clear all, and validation:
-```bash
-npm run test:e2e
-```
-
-### Run App-to-API Client Integration Tests
-Tests `app/www/js/api.js` against the live local server:
-```bash
-npm run test:api
-```
+| Test Suite | Command | Coverage |
+| :--- | :--- | :--- |
+| **Rule Accuracy Benchmark** | `npm test` | **28/28 passed (100% accuracy)** across 20 messages & 8 URLs |
+| **Full-Stack 5-Feature Suite** | `npm run test:fullstack` | **30/30 passed** (Auth, URL Identity, QR, Payment OCR, Emergency, Access Control) |
+| **Server E2E Suite** | `npm run test:e2e` | **6/6 passed** (Health, Masking, Device Isolation, Validation) |
+| **Client API Integration** | `npm run test:api` | **5/5 passed** (`api.js` client to Express backend) |
 
 ---
 
-## 📱 Running the Mobile App
+## 📱 Building & Running on Android (Android Studio)
 
-### Android Development Networking Setup
-In `app/www/js/config.js`, set `apiBaseUrl` depending on where the app is running:
-- **Browser preview**: `http://localhost:3000`
-- **Android Studio Emulator**: `http://10.0.2.2:3000` (special alias for host computer)
-- **Physical Phone on Wi-Fi**: `http://<YOUR_LAPTOP_IP>:3000` (e.g. `http://192.168.1.15:3000`)
-- **Production Deployment**: `https://scamlens-api.onrender.com`
-
-> **Cleartext Notice**: `server.cleartext: true` is enabled in `capacitor.config.json` and `AndroidManifest.xml` for local HTTP development. For production deployment over HTTPS, set `cleartext: false`.
-
-### Run in Browser
-Open `app/www/index.html` in Chrome or serve with any static server:
-```bash
-npx serve app/www -p 5173
-```
-
-### Run on Android Studio Emulator or Physical Device
-1. Sync web assets into Android project:
+1. Sync web assets and Capacitor plugins:
    ```bash
    npm run cap:sync
    ```
-2. Open the native project in Android Studio:
+2. Open the Android project in Android Studio:
    ```bash
    npx cap open android
    ```
-3. In Android Studio:
-   - Wait for Gradle to index the project.
-   - Click **Run** (`Shift + F10`) to launch on an Android Virtual Device (AVD) or plugged-in USB device.
+3. In **Android Studio**:
+   - **Run directly on USB-connected phone or Emulator**: Select your device in the top toolbar and click **Run (▶)**.
+   - **Build installable APK**: Click **Build → Build Bundle(s) / APK(s) → Build APK(s)**. The generated APK is located at:
+     `android/app/build/outputs/apk/debug/app-debug.apk`
 
 ---
 
-## 🛡️ Security & Privacy Architecture
+## 🛡️ Security & Privacy Principles
 
-1. **Zero Raw Text Retention**: Neither the database nor the application logs store original user messages or URLs. Only sanitized, truncated previews (`maskPreview`) are retained.
-2. **Device Isolation**: Scans are strictly indexed by UUIDv4 `deviceId`. Queries strictly mandate and validate UUID format.
-3. **Automated Data Purge**: MongoDB scans carry a 90-day TTL (`expireAfterSeconds: 7776000`).
-4. **Rate Limiting**: Express rate limiter caps `/api/analyze` to 30 requests per minute per IP.
-5. **No Stack Traces**: Centralized error middleware ensures internal stack traces are never exposed to clients.
-6. **No "Safe" Claims**: To avoid false senses of security, clean inputs are designated *"Low Risk (No major risk indicators found)"* alongside explicit guidance to verify with official institutions.
-
+1. **Zero Raw Text or Raw Image Retention**: Raw messages are masked (`maskPreview`), and uploaded payment screenshots / QR images are processed strictly in RAM (`multer.memoryStorage()`) and discarded immediately after analysis.
+2. **Password & Token Security**: User passwords are never stored in plaintext (`bcryptjs` 12 rounds), and JWT tokens support immediate revocation on logout.
+3. **SSRF Protection**: Live URL redirect and certificate inspection blocks loopback (`127.0.0.0/8`), private LAN (`10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`), link-local (`169.254.0.0/16`), and cloud metadata endpoints.
+4. **Honest Verdicts & Mandatory Disclaimers**: Never claims a message, URL, QR code, or payment screenshot is 100% "Safe" or "Genuine" — always instructs users to verify transactions in their official banking/UPI application.
