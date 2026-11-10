@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>ScamLens - See Through Scams. Stay Safe.</title>
+  
+  <!-- Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- App Icon & Favicon -->
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="apple-touch-icon" href="assets/logo.png">
+
+  <!-- App Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div id="app-container">
+    
+    <!-- Top Header -->
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-icon">
+          <img src="assets/logo.png" alt="ScamLens Logo" class="brand-logo-img">
+        </div>
+        <span class="brand-name">ScamLens</span>
+      </div>
+
+      <div class="header-actions">
+        <!-- Quick Account / Login Button -->
+        <button id="btn-header-user" class="user-pill-btn" type="button">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+          <span id="header-user-label">Sign In</span>
+        </button>
+
+        <!-- Online / Offline Status Chip -->
+        <div id="status-chip" class="status-chip online">
+          <span class="status-dot"></span>
+          <span id="status-chip-text">Checking...</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content Body -->
+    <main class="main-content">
+
+      <!-- ================= TAB 1: SCANNER & DETECTION SUITE ================= -->
+      <section id="view-scan" class="view-panel active">
+        
+        <!-- Input Form Screen -->
+        <div id="scan-form-container">
+          <div class="hero-banner">
+            <h1 class="hero-tagline">See Through Scams. Stay Safe.</h1>
+            <p class="hero-subtext">Analyze suspicious messages, websites, QR codes, and payment screenshots.</p>
+          </div>
+
+          <!-- Quick Emergency Banner -->
+          <div id="btn-quick-emergency" class="emergency-quick-banner" role="button" tabindex="0">
+            <span class="emergency-quick-text">Suspect you became a fraud victim?</span>
+            <span class="emergency-quick-cta">Emergency Help &rarr;</span>
+          </div>
+
+          <!-- 4-Tool Selector Grid -->
+          <div class="scanner-tools-grid type-toggle-container" style="background: transparent; padding: 0; border: none;">
+            <button id="btn-toggle-msg" class="scanner-tool-btn type-toggle-btn active" type="button">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+              </svg>
+              <span>Message / SMS</span>
+            </button>
+
+            <button id="btn-toggle-url" class="scanner-tool-btn type-toggle-btn" type="button">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="2" y1="12" x2="22" y2="12"/>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+              </svg>
+              <span>Website Link</span>
+            </button>
+
+            <button id="btn-toggle-qr" class="scanner-tool-btn type-toggle-btn" type="button">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+                <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+              </svg>
+              <span>QR Scanner</span>
+            </button>
+
+            <button id="btn-toggle-payment" class="scanner-tool-btn type-toggle-btn" type="button">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="5" width="20" height="14" rx="2"/>
+                <line x1="2" y1="10" x2="22" y2="10"/>
+              </svg>
+              <span>Payment Receipt</span>
+            </button>
+          </div>
+
+          <!-- PANEL A: Message / SMS & Website URL Input Card -->
+          <div id="panel-input-text" class="card">
+            <div class="input-header">
+              <label id="input-label" for="input-text" class="input-label">Suspicious Message Text</label>
+              <button id="btn-paste" class="paste-btn" type="button">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+                  <rect x="8" y="2" width="8" height="4" rx="1" ry="1"/>
+                </svg>
+                Paste
+              </button>
+            </div>
+
+            <textarea id="input-text" class="text-input-field" placeholder="Paste the suspicious SMS, WhatsApp message, or email here..."></textarea>
+
+            <div class="input-footer">
+              <span id="char-counter" class="char-counter">0 / 2000</span>
+            </div>
+
+            <button id="btn-analyze" class="btn-primary" type="button" style="margin-top: 14px;">
+              <span>Analyze Risk</span>
+            </button>
+
+            <div class="privacy-note">
+              <svg class="privacy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              </svg>
+              <span>Your input is analyzed securely and only a masked preview is stored in history.</span>
+            </div>
+          </div>
+
+          <!-- PANEL B: QR Code Scam Detector Card -->
+          <div id="panel-input-qr" class="card" style="display: none;">
+            <div class="input-header">
+              <span class="input-label">QR Code Scam Detector</span>
+            </div>
+            <p style="font-size: 12.5px; color: var(--color-ink-muted); margin-bottom: 10px;">
+              Inspect website links or UPI payment QR codes before opening or entering your PIN. ScamLens never automatically opens links or initiates payments.
+            </p>
+
+            <div class="qr-action-row">
+              <button id="btn-qr-camera-start" class="btn-secondary" type="button" style="min-height: 44px; font-size: 13px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                  <circle cx="12" cy="13" r="4"/>
+                </svg>
+                Open Camera
+              </button>
+              <button id="btn-qr-upload" class="btn-secondary" type="button" style="min-height: 44px; font-size: 13px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                Upload QR Image
+              </button>
+              <input id="qr-file-input" type="file" accept="image/png,image/jpeg,image/jpg" style="display: none;">
+            </div>
+
+            <!-- Live Camera Viewfinder -->
+            <div id="qr-camera-box" class="qr-camera-box">
+              <video id="qr-video" class="qr-video-el" playsinline muted></video>
+              <div class="qr-scan-overlay-frame"></div>
+              <button id="btn-qr-camera-stop" class="btn-remove-image" type="button" style="margin: 8px;">Stop Camera</button>
+            </div>
+            <canvas id="qr-canvas" style="display: none;"></canvas>
+
+            <!-- Extracted QR Content Display / Input -->
+            <div style="margin-top: 12px;">
+              <label for="qr-content-input" class="form-label">Extracted QR Payload (URL / UPI URI / Text)</label>
+              <textarea id="qr-content-input" class="text-input-field" style="min-height: 76px;" placeholder="Scan a QR code with your camera, upload a QR image, or paste a QR payload (e.g. upi://pay?pa=... or https://...)"></textarea>
+            </div>
+
+            <button id="btn-analyze-qr" class="btn-primary" type="button" style="margin-top: 12px;">
+              <span>Analyze QR Code</span>
+            </button>
+          </div>
+
+          <!-- PANEL C: Fake Payment Screenshot Detector Card -->
+          <div id="panel-input-payment" class="card" style="display: none;">
+            <div class="input-header">
+              <span class="input-label">Fake Payment Screenshot Detector</span>
+            </div>
+            <p style="font-size: 12.5px; color: var(--color-ink-muted); margin-bottom: 10px;">
+              Upload a payment receipt screenshot (JPG, JPEG, PNG) to extract UTR/Transaction details via OCR and check for missing references or manipulation signs.
+            </p>
+
+            <div id="payment-dropzone" class="upload-dropzone" role="button" tabindex="0">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                <circle cx="8.5" cy="8.5" r="1.5"/>
+                <polyline points="21 15 16 10 5 21"/>
+              </svg>
+              <div class="upload-dropzone-title">Tap to Select Screenshot (Camera / Gallery)</div>
+              <div class="upload-dropzone-sub">Supports JPG, JPEG, PNG (Max 5 MB)</div>
+            </div>
+            <input id="payment-file-input" type="file" accept="image/png,image/jpeg,image/jpg" style="display: none;">
+
+            <!-- Image Preview -->
+            <div id="payment-preview-wrapper" class="image-preview-wrapper">
+              <img id="payment-preview-img" class="image-preview-el" alt="Payment Screenshot Preview">
+              <div id="payment-file-meta" style="font-size: 12px; color: var(--color-ink-muted); margin-bottom: 6px;"></div>
+              <button id="btn-payment-remove" class="btn-remove-image" type="button">
+                Remove Image
+              </button>
+            </div>
+
+            <button id="btn-analyze-payment" class="btn-primary" type="button" style="margin-top: 14px;">
+              <span>Analyze Screenshot</span>
+            </button>
+
+            <div class="privacy-note">
+              <svg class="privacy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+              </svg>
+              <span>Screenshots are processed in memory via OCR and deleted immediately. Always verify actual credit in your bank/UPI app.</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Result Screen -->
+        <div id="result-container" class="result-container">
+          
+          <!-- Offline Result Banner -->
+          <div id="result-offline-banner" class="offline-notice-banner">
+            Offline Mode - Result checked on-device, not saved to history.
+          </div>
+
+          <!-- Risk Header Card -->
+          <div class="risk-header-card">
+            <div id="result-risk-badge" class="risk-badge low">Low Risk</div>
+            <div id="result-risk-category" style="font-size: 12px; font-weight: 600; color: var(--color-ink-muted); margin-top: 4px;">Low Risk Indicators</div>
+            <h2 id="result-risk-note" class="risk-note-title">No major risk indicators found</h2>
+
+            <!-- Score Meter -->
+            <div class="meter-wrapper">
+              <div class="meter-track">
+                <div id="result-meter-fill" class="meter-fill" style="width: 0%;"></div>
+              </div>
+              <div class="meter-legend">
+                <span>Risk Score</span>
+                <span id="result-score-text">0 / 100</span>
+              </div>
+            </div>
+            <div id="result-timestamp" style="font-size: 11px; color: var(--color-ink-muted); margin-top: 8px;"></div>
+          </div>
+
+          <!-- Structured Module Breakdown (Website Identity / Payment OCR / QR Details) -->
+          <div id="result-structured-details" class="structured-detail-card"></div>
+
+          <!-- Warning Signs Found -->
+          <div class="section-title">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+              <line x1="12" y1="9" x2="12" y2="13"/>
+              <line x1="12" y1="17" x2="12.01" y2="17"/>
+            </svg>
+            Detected Indicators (<span id="result-warnings-count">0</span>)
+          </div>
+          <div id="result-warnings-container"></div>
+
+          <!-- What To Do Next -->
+          <div class="section-title" style="margin-top: 20px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+            Recommended Next Steps
+          </div>
+          <div class="recommendations-card">
+            <div id="result-actions-container"></div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="result-actions">
+            <button id="btn-share" class="btn-secondary" type="button">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+              </svg>
+              Share Risk Warning
+            </button>
+            <button id="btn-check-another" class="btn-primary" type="button">
+              Check Another
+            </button>
+          </div>
+
+          <!-- Mandatory Disclaimer -->
+          <div id="result-disclaimer" class="disclaimer-box">
+            ScamLens gives preliminary risk indicators, not guaranteed fraud verdicts. Always verify independently through official channels before acting.
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ================= TAB 2: SCAM EMERGENCY ASSISTANT ================= -->
+      <section id="view-emergency" class="view-panel">
+        <div class="helpline-banner-card">
+          <div class="helpline-banner-title">Indian Cybercrime Emergency Support</div>
+          <div class="helpline-banner-sub">
+            If you lost money to digital fraud, report immediately during the Golden Hour to freeze the scammer's bank account.
+          </div>
+          <div class="helpline-btn-row">
+            <a href="tel:1930" class="helpline-btn">
+              Call Helpline 1930
+            </a>
+            <a href="https://cybercrime.gov.in/" target="_blank" rel="noopener noreferrer" class="helpline-btn secondary">
+              cybercrime.gov.in
+            </a>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2 style="font-size: 17px; font-weight: 700; margin-bottom: 4px;">What happened to you?</h2>
+          <p style="font-size: 12.5px; color: var(--color-ink-muted);">
+            Select your situation below to receive immediate step-by-step emergency guidance.
+          </p>
+
+          <div id="emergency-categories-list" class="emergency-option-list"></div>
+
+          <!-- Follow-up Questions & Submit -->
+          <div id="emergency-questions-panel" style="display: none; margin-top: 14px;">
+            <div id="emergency-questions-container"></div>
+            <button id="btn-emergency-submit" class="btn-primary" type="button" style="margin-top: 14px; background: var(--color-risk-high);">
+              <span>Get Immediate Action Plan</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Tailored Emergency Guidance Output -->
+        <div id="emergency-guidance-result" class="card" style="display: none; margin-top: 14px; border: 1.5px solid var(--color-risk-high);">
+          <div id="emergency-urgency-badge" class="risk-badge high" style="margin-bottom: 8px;">CRITICAL</div>
+          <h3 id="emergency-result-title" style="font-size: 16px; font-weight: 700; margin-bottom: 10px;"></h3>
+
+          <div class="section-title" style="margin-top: 8px;">Immediate Action Steps</div>
+          <div id="emergency-steps-list" class="recommendations-card" style="margin-bottom: 12px;"></div>
+
+          <div class="section-title" style="color: var(--color-risk-high);">What NOT To Do</div>
+          <div id="emergency-donot-list" style="margin-bottom: 12px;"></div>
+        </div>
+
+        <!-- Saved Emergency Assistance History -->
+        <div style="margin-top: 18px;">
+          <div class="history-header">
+            <h3 style="font-size: 15px; font-weight: 700;">Saved Assistance Sessions</h3>
+          </div>
+          <div id="emergency-history-list" class="history-list"></div>
+        </div>
+      </section>
+
+      <!-- ================= TAB 3: HISTORY VIEW ================= -->
+      <section id="view-history" class="view-panel">
+        
+        <div class="history-header">
+          <h2 class="history-title">Scan History</h2>
+          <button id="btn-clear-history" class="btn-clear-all" type="button">Clear All</button>
+        </div>
+
+        <!-- Filter Pills -->
+        <div id="history-filter-bar" class="history-filter-bar">
+          <button class="history-filter-pill active" data-filter="all" type="button">All Scans</button>
+          <button class="history-filter-pill" data-filter="message" type="button">SMS / Message</button>
+          <button class="history-filter-pill" data-filter="url" type="button">Website Links</button>
+          <button class="history-filter-pill" data-filter="qr" type="button">QR Codes</button>
+          <button class="history-filter-pill" data-filter="payment" type="button">Payment Receipts</button>
+        </div>
+
+        <!-- History Items List -->
+        <div id="history-items-container" class="history-list"></div>
+
+        <!-- Empty State -->
+        <div id="history-empty-state" class="empty-state" style="display: none;">
+          <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12"/>
+            <line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+          <h3 class="empty-title">No Scans Yet</h3>
+          <p class="empty-desc">Your analyzed messages, links, QR codes, and payment receipts will appear here.</p>
+        </div>
+
+        <!-- Error State with Retry -->
+        <div id="history-error-state" class="error-state" style="display: none;">
+          <h3 class="error-title">Unable to Load History</h3>
+          <p id="history-error-desc" class="error-desc">Server is unreachable. Please check your network connection.</p>
+          <button id="btn-history-retry" class="btn-retry" type="button">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>
+            </svg>
+            Retry
+          </button>
+        </div>
+
+      </section>
+
+      <!-- ================= TAB 4: AUTHENTICATION & USER PROFILE ================= -->
+      <section id="view-profile" class="view-panel">
+
+        <!-- AUTHENTICATION CONTAINER (Shown when logged out) -->
+        <div id="auth-forms-container">
+
+          <!-- LOGIN CARD -->
+          <div id="card-auth-login" class="card">
+            <h2 style="font-size: 18px; font-weight: 700; margin-bottom: 4px;">Sign In to ScamLens</h2>
+            <p style="font-size: 12.5px; color: var(--color-ink-muted); margin-bottom: 14px;">
+              Access your personal scan history, payment receipt checks, and emergency assistance logs across devices.
+            </p>
+
+            <form id="form-login" novalidate>
+              <div class="form-group">
+                <label class="form-label" for="login-email">Email Address</label>
+                <input id="login-email" class="form-input" type="email" placeholder="you@example.com" required autocomplete="email">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="login-password">Password</label>
+                <div class="form-input-wrapper">
+                  <input id="login-password" class="form-input" type="password" placeholder="Enter your password" required autocomplete="current-password">
+                  <button type="button" class="pwd-toggle-btn" data-target="login-password">Show</button>
+                </div>
+              </div>
+
+              <div class="form-checkbox-row">
+                <label class="form-checkbox-label">
+                  <input id="login-remember" type="checkbox">
+                  <span>Remember me</span>
+                </label>
+                <button id="btn-go-forgot" type="button" class="link-btn">Forgot password?</button>
+              </div>
+
+              <button id="btn-login-submit" class="btn-primary" type="submit">
+                <span>Login</span>
+              </button>
+            </form>
+
+            <div style="text-align: center; margin-top: 14px; font-size: 13px; color: var(--color-ink-muted);">
+              Don't have an account?
+              <button id="btn-go-signup" type="button" class="link-btn">Sign Up</button>
+            </div>
+          </div>
+
+          <!-- SIGN UP CARD -->
+          <div id="card-auth-signup" class="card" style="display: none;">
+            <h2 style="font-size: 18px; font-weight: 700; margin-bottom: 4px;">Create Your Account</h2>
+            <p style="font-size: 12.5px; color: var(--color-ink-muted); margin-bottom: 14px;">
+              Protect yourself with full-stack scam detection and private cloud history.
+            </p>
+
+            <form id="form-signup" novalidate>
+              <div class="form-group">
+                <label class="form-label" for="signup-name">Full Name *</label>
+                <input id="signup-name" class="form-input" type="text" placeholder="Enter your full name" required>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="signup-email">Email Address *</label>
+                <input id="signup-email" class="form-input" type="email" placeholder="you@example.com" required autocomplete="email">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="signup-mobile">Mobile Number (Optional)</label>
+                <input id="signup-mobile" class="form-input" type="tel" placeholder="e.g. 9876543210">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="signup-password">Password * (Min 8 chars, letter + number)</label>
+                <div class="form-input-wrapper">
+                  <input id="signup-password" class="form-input" type="password" placeholder="Create a strong password" required autocomplete="new-password">
+                  <button type="button" class="pwd-toggle-btn" data-target="signup-password">Show</button>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="signup-confirm-password">Confirm Password *</label>
+                <div class="form-input-wrapper">
+                  <input id="signup-confirm-password" class="form-input" type="password" placeholder="Re-enter your password" required autocomplete="new-password">
+                  <button type="button" class="pwd-toggle-btn" data-target="signup-confirm-password">Show</button>
+                </div>
+              </div>
+
+              <div class="form-checkbox-row">
+                <label class="form-checkbox-label">
+                  <input id="signup-terms" type="checkbox" required>
+                  <span>I agree to the ScamLens Terms &amp; Privacy Policy</span>
+                </label>
+              </div>
+
+              <button id="btn-signup-submit" class="btn-primary" type="submit">
+                <span>Create Account</span>
+              </button>
+            </form>
+
+            <div style="text-align: center; margin-top: 14px; font-size: 13px; color: var(--color-ink-muted);">
+              Already have an account?
+              <button id="btn-go-login" type="button" class="link-btn">Login</button>
+            </div>
+          </div>
+
+          <!-- FORGOT / RESET PASSWORD CARD -->
+          <div id="card-auth-forgot" class="card" style="display: none;">
+            <h2 style="font-size: 18px; font-weight: 700; margin-bottom: 4px;">Reset Your Password</h2>
+            <p style="font-size: 12.5px; color: var(--color-ink-muted); margin-bottom: 14px;">
+              Request a 6-digit verification code for your registered email to set a new password.
+            </p>
+
+            <form id="form-forgot" novalidate>
+              <div class="form-group">
+                <label class="form-label" for="forgot-email">Registered Email Address</label>
+                <input id="forgot-email" class="form-input" type="email" placeholder="you@example.com" required>
+              </div>
+
+              <button id="btn-forgot-send-code" class="btn-secondary" type="button" style="width: 100%; margin-bottom: 12px;">
+                Send Verification Code
+              </button>
+
+              <div id="forgot-verify-section" style="display: none;">
+                <div id="forgot-code-banner" class="detail-note-box" style="margin-bottom: 10px; background: var(--color-primary-light); color: var(--color-primary-dark); font-weight: 600;"></div>
+
+                <div class="form-group">
+                  <label class="form-label" for="forgot-code">6-Digit Verification Code</label>
+                  <input id="forgot-code" class="form-input" type="text" maxlength="6" placeholder="Enter 6-digit code">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="forgot-new-password">New Password</label>
+                  <div class="form-input-wrapper">
+                    <input id="forgot-new-password" class="form-input" type="password" placeholder="Min 8 chars, letter + number">
+                    <button type="button" class="pwd-toggle-btn" data-target="forgot-new-password">Show</button>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="forgot-confirm-password">Confirm New Password</label>
+                  <input id="forgot-confirm-password" class="form-input" type="password" placeholder="Re-enter new password">
+                </div>
+
+                <button id="btn-forgot-reset-submit" class="btn-primary" type="submit">
+                  <span>Verify &amp; Reset Password</span>
+                </button>
+              </div>
+            </form>
+
+            <div style="text-align: center; margin-top: 14px; font-size: 13px;">
+              <button id="btn-back-to-login" type="button" class="link-btn">&larr; Back to Login</button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- USER PROFILE DASHBOARD (Shown when authenticated) -->
+        <div id="profile-dashboard-container" style="display: none;">
+          <div class="card" style="margin-bottom: 14px;">
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+              <div class="brand-icon" style="width: 44px; height: 44px; border-radius: 50%; font-size: 18px; font-weight: 700;" id="profile-avatar-initials">U</div>
+              <div>
+                <h2 id="profile-user-name" style="font-size: 17px; font-weight: 700;">User Name</h2>
+                <div id="profile-user-email" style="font-size: 13px; color: var(--color-ink-muted);">user@example.com</div>
+              </div>
+            </div>
+
+            <div class="detail-grid-row">
+              <span class="detail-key">Mobile Number</span>
+              <span id="profile-user-mobile" class="detail-val">Not provided</span>
+            </div>
+            <div class="detail-grid-row">
+              <span class="detail-key">Account Created</span>
+              <span id="profile-user-created" class="detail-val">-</span>
+            </div>
+            <div class="detail-grid-row">
+              <span class="detail-key">Data Protection</span>
+              <span class="detail-val" style="color: var(--color-risk-low);">User-Isolated &amp; Masked</span>
+            </div>
+          </div>
+
+          <div class="profile-stat-grid">
+            <div class="profile-stat-card">
+              <div id="profile-stat-total" class="profile-stat-num">0</div>
+              <div class="profile-stat-label">Total Scans</div>
+            </div>
+            <div class="profile-stat-card">
+              <div id="profile-stat-high" class="profile-stat-num" style="color: var(--color-risk-high);">0</div>
+              <div class="profile-stat-label">High Risk</div>
+            </div>
+            <div class="profile-stat-card">
+              <div id="profile-stat-emergency" class="profile-stat-num" style="color: var(--color-risk-suspicious);">0</div>
+              <div class="profile-stat-label">Emergency Logs</div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3 style="font-size: 15px; font-weight: 700; margin-bottom: 10px;">Account &amp; Security</h3>
+            <button id="btn-profile-view-history" class="btn-secondary" type="button" style="width: 100%; margin-bottom: 10px;">
+              View Full Scan History
+            </button>
+            <button id="btn-logout" class="btn-primary" type="button" style="background: var(--color-risk-high);">
+              <span>Logout</span>
+            </button>
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+
+    <!-- Bottom Navigation Tab Bar -->
+    <nav class="bottom-nav">
+      <button id="nav-tab-scan" class="nav-tab-btn active" type="button">
+        <svg class="nav-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          <circle cx="12" cy="11" r="3"/>
+        </svg>
+        <span>Scan</span>
+      </button>
+
+      <button id="nav-tab-emergency" class="nav-tab-btn" type="button">
+        <svg class="nav-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+          <line x1="12" y1="9" x2="12" y2="13"/>
+          <line x1="12" y1="17" x2="12.01" y2="17"/>
+        </svg>
+        <span>Emergency</span>
+      </button>
+
+      <button id="nav-tab-history" class="nav-tab-btn" type="button">
+        <svg class="nav-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <polyline points="12 6 12 12 16 14"/>
+        </svg>
+        <span>History</span>
+      </button>
+
+      <button id="nav-tab-profile" class="nav-tab-btn" type="button">
+        <svg class="nav-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+        <span>Account</span>
+      </button>
+    </nav>
+
+    <!-- Generic Modal for Confirmation / Details -->
+    <div id="confirm-modal" class="modal-overlay">
+      <div class="modal-card">
+        <h3 id="confirm-modal-title" class="modal-title">Confirm Action</h3>
+        <p id="confirm-modal-body" class="modal-body">Are you sure you want to proceed?</p>
+        <div class="modal-actions">
+          <button id="btn-modal-cancel" class="btn-modal-cancel" type="button">Cancel</button>
+          <button id="btn-modal-confirm" class="btn-modal-confirm" type="button">Confirm</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Notifications Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+  </div>
+
+  <!-- Local QR Decoder Library -->
+  <script src="js/vendor/jsQR.js"></script>
+
+  <!-- Shared On-Device Engine Files -->
+  <script src="js/engine/config.js"></script>
+  <script src="js/engine/scoring.js"></script>
+  <script src="js/engine/masking.js"></script>
+  <script src="js/engine/urlAnalyzer.js"></script>
+  <script src="js/engine/rules/message.rules.js"></script>
+  <script src="js/engine/messageAnalyzer.js"></script>
+
+  <!-- Client Application Scripts -->
+  <script src="js/config.js"></script>
+  <script src="js/device.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>

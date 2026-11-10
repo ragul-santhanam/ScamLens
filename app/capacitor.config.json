@@ -1,0 +1,10 @@
+{
+  "appId": "com.scamlens.app",
+  "appName": "ScamLens",
+  "webDir": "www",
+  "server": {
+    "cleartext": true,
+    "_comment": "cleartext: true is enabled for local HTTP development (e.g. 10.0.2.2 or local laptop Wi-Fi IP). Switch to false before releasing for production HTTPS."
+  }
+}
+

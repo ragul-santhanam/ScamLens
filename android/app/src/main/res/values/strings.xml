@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">ScamLens</string>
+    <string name="title_activity_main">ScamLens</string>
+    <string name="package_name">com.scamlens.app</string>
+    <string name="custom_url_scheme">com.scamlens.app</string>
+</resources>

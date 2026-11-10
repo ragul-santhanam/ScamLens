@@ -1,0 +1,12 @@
+{
+  "appId": "com.scamlens.app",
+  "appName": "ScamLens",
+  "webDir": "app/www",
+  "server": {
+    "androidScheme": "http",
+    "cleartext": true,
+    "allowNavigation": ["*"],
+    "_comment": "androidScheme: http and cleartext: true allow the Android WebView to call local HTTP backends (127.0.0.1:3000, 10.0.2.2, or Wi-Fi IP) without Mixed Content blocking."
+  }
+}
+
